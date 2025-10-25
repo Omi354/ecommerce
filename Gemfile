@@ -4,7 +4,13 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.4.2"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0"
+gem "rails", "~> 8.0.0"
+gem 'activerecord', '~> 8.0.0'
+gem 'actionpack', '~> 8.0.0'
+gem 'activesupport', '~> 8.0.0'
+gem 'activemodel', '~> 8.0.0'
+gem 'railties', '~> 8.0.0'
+gem 'actionview', '~> 8.0.0'
 
 # An improved asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft", "~> 1.1"
@@ -48,6 +54,9 @@ gem "sidekiq", "~> 7.3"
 gem "devise"
 
 gem "stripe"
+
+gem 'ridgepole', '~> 3.0.4'
+
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
