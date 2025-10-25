@@ -36,6 +36,10 @@ create_table "admins", force: :cascade do |t|
 end
 
 create_table "customers" do |t|
+  # Add
+  t.string :name,               null: false
+  t.integer :status,            null: false, default: 0
+
   ## Database authenticatable
   t.string :email,              null: false, default: ""
   t.string :encrypted_password, null: false, default: ""
