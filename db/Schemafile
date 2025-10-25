@@ -1,0 +1,10 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+create_table "articles", force: :cascade do |t|
+  t.string   "title"
+  t.text     "desc", renamed_from: "text"
+  t.text     "author"
+  t.datetime "created_at"
+  t.datetime "updated_at"
+end
