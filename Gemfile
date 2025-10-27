@@ -57,6 +57,9 @@ gem "stripe"
 
 gem 'ridgepole', '~> 3.0.4'
 
+gem 'slim-rails'
+
+gem "html2slim", github: "slim-template/html2slim"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

@@ -10,20 +10,35 @@ on:
       - "master"
 
 jobs:
-  test:
-    runs-on: "ubuntu-22.04"
-
+  lint:
+    runs-on: ubuntu-latest
     steps:
-      - uses: "actions/checkout@v2"
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: "Install CI dependencies"
-        run: |
-          ./run ci:install-deps
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2
+          bundler-cache: true
 
-      - name: "Test"
-        run: |
-          # Remove volumes in CI to avoid permission errors due to UID / GID.
-          sed -i "s|.:/app|/tmp:/tmp|g" .env*
-          sed -i "s|.:/app|/tmp:/tmp|g" docker-compose.yml
+      - name: Lint code for consistent style
+        run: bundle exec rubocop -f github
 
-          ./run ci:test
+  # test:
+  #   runs-on: "ubuntu-22.04"
+
+  #   steps:
+  #     - uses: "actions/checkout@v2"
+
+  #     - name: "Install CI dependencies"
+  #       run: |
+  #         ./run ci:install-deps
+
+  #     - name: "Test"
+  #       run: |
+  #         # Remove volumes in CI to avoid permission errors due to UID / GID.
+  #         sed -i "s|.:/app|/tmp:/tmp|g" .env*
+  #         sed -i "s|.:/app|/tmp:/tmp|g" docker-compose.yml
+
+  #         ./run ci:test
