@@ -13,6 +13,6 @@ class Product < ApplicationRecord
       :description,
       :price
     ],
-    message: '全く同じ商品名・商品説明・金額のセットが他にも存在します'
+    message: "全く同じ商品名・商品説明・金額のセットが他にも存在します"
   }
 end
