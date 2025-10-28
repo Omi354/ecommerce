@@ -14,7 +14,7 @@ class Admins::ProductsController < Admins::AdminBaseController
   def create
     @product = Product.new(product_params)
     if @product.save
-      redirect_to admin_product_path(@product), notice: '商品を追加しました'
+      redirect_to admins_product_path(@product), notice: '商品を追加しました'
     else
       flash.now[:alert] = '商品の追加に失敗しました'
       render :new
@@ -25,7 +25,7 @@ class Admins::ProductsController < Admins::AdminBaseController
 
   def update
     if @product.update(product_params)
-      redirect_to admin_product_path(@product), notice: '商品を編集しました'
+      redirect_to admins_product_path(@product), notice: '商品を編集しました'
     else
       flash.now[:alert] = '商品の編集に失敗しました'
       render :edit
@@ -35,7 +35,7 @@ class Admins::ProductsController < Admins::AdminBaseController
   private
 
   def set_product
-    @product = Product.find(params[id])
+    @product = Product.find(params[:id])
   end
 
   def product_params

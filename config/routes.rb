@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     sessions: "admins/sessions"
   }
 
-  namespace :admin do
+  namespace :admins do
     resources :products, only: %i[ index show create new edit update ]
   end
 
