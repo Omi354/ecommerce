@@ -1,0 +1,5 @@
+.mb-6.text-center
+  span.text-3xl.font-bold
+    | Edit Product
+
+= render partial: 'form', locals: { product: @product, path: admins_product_path(@product) }

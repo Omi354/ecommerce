@@ -1,0 +1,41 @@
+.mb-8.text-center
+  span.text-3xl.font-bold
+    | Products
+
+.flex.flex-wrap
+  .flex-none.w-full.max-w-full.px-6
+    = link_to new_admins_product_path, class: "mb-4 inline-flex items-center justify-center rounded-md bg-indigo-500 p-3 text-white duration-100 ease-in-out hover:bg-indigo-600 focus:outline-none" do
+      | Add New Product
+    .relative.flex.flex-col.min-w-0.mb-6.break-words.bg-white.border-0.border-transparent.border-solid.shadow-soft-xl.rounded-2xl.bg-clip-border
+      .flex-auto.px-0.pt-0.pb-2
+        .p-0.overflow-x-auto
+          table.items-center.w-full.mb-0.align-top.border-gray-200.text-slate-500
+            thead.align-bottom
+              tr
+                th.px-6.py-3.font-bold.text-left.uppercase.align-middle.bg-transparent.border-b.border-gray-200.shadow-none.text-xxs.border-b-solid.tracking-none.whitespace-nowrap.text-slate-400.opacity-70 Image & Name
+                th.px-6.py-3.pl-2.font-bold.text-left.uppercase.align-middle.bg-transparent.border-b.border-gray-200.shadow-none.text-xxs.border-b-solid.tracking-none.whitespace-nowrap.text-slate-400.opacity-70 Price
+                th.px-6.py-3.font-bold.text-center.uppercase.align-middle.bg-transparent.border-b.border-gray-200.shadow-none.text-xxs.border-b-solid.tracking-none.whitespace-nowrap.text-slate-400.opacity-70 Stock
+                th.px-6.py-3.font-bold.text-center.uppercase.align-middle.bg-transparent.border-b.border-gray-200.shadow-none.text-xxs.border-b-solid.tracking-none.whitespace-nowrap.text-slate-400.opacity-70 CreatedAt
+                th.px-6.py-3.font-bold.text-center.uppercase.align-middle.bg-transparent.border-b.border-gray-200.shadow-none.text-xxs.border-b-solid.tracking-none.whitespace-nowrap.text-slate-400.opacity-70 UpdatedAt
+                th.px-6.py-3.font-semibold.capitalize.align-middle.bg-transparent.border-b.border-gray-200.border-solid.shadow-none.tracking-none.whitespace-nowrap.text-slate-400.opacity-70
+            tbody
+              - @products.each do |product|
+                tr
+                  td.p-2.align-middle.bg-transparent.border-b.whitespace-nowrap.shadow-transparent
+                    = link_to admins_product_path(product) do
+                      .flex.px-2.py-1
+                        .w-16.mr-5
+                          = image_tag product.image, class: "inline-flex items-center justify-center mr-4 text-white transition-all duration-200 ease-soft-in-out text-sm rounded-xl object-fill"
+                        .flex.flex-col.justify-center
+                          h6.text-lg.font-bold = product.name
+                  td.p-2.align-middle.bg-transparent.border-b.whitespace-nowrap.shadow-transparent
+                    p.font-semibold.leading-tight.text-sm = number_to_currency(product.price, unit: "¥", strip_insignificant_zeros: true)
+                  td.p-2.text-center.align-middle.bg-transparent.border-b.whitespace-nowrap.shadow-transparent
+                    span.font-semibold.leading-tight.text-sm.text-slate-400 = product.stock
+                  td.p-2.text-center.align-middle.bg-transparent.border-b.whitespace-nowrap.shadow-transparent
+                    span.font-semibold.leading-tight.text-sm.text-slate-400 = l product.created_at, format: :short
+                  td.p-2.text-center.align-middle.bg-transparent.border-b.whitespace-nowrap.shadow-transparent
+                    span.font-semibold.leading-tight.text-sm.text-slate-400 = l product.updated_at, format: :short
+                  td.p-2.align-middle.bg-transparent.border-b.whitespace-nowrap.shadow-transparent
+                    = link_to edit_admins_product_path(product), class: "font-semibold leading-tight text-xs text-slate-400" do
+                      | Edit
