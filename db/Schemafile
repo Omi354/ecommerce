@@ -74,3 +74,12 @@ create_table "customers" do |t|
   t.index :email, unique: true
   t.index :reset_password_token, unique: true
 end
+
+create_table "products" do |t|
+  t.string :name, null: false
+  t.text :description, null: false
+  t.integer :price, null: false
+  t.integer :stock, null: false, default: 0
+  t.timestamps null: false
+  t.index [ :name, :description, :price ], unique: true
+end
