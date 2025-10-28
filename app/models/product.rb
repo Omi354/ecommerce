@@ -1,9 +1,12 @@
-class Customer < ApplicationRecord
+class Product < ApplicationRecord
+  has_one_attached :image
+
   with_options presence: true
     validates :name,
     validates :description,
     validates :price,
-    validates :stock
+    validates :stock,
+    validates :image
   end
   validates :name, uniqueness: {
     scope: {
