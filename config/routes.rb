@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   scope module: :customers do
     resources :products, only: %i[ index show ]
   end
-  
+
 
   root to: "pages#home"
   get "/up/", to: "up#index", as: :up
