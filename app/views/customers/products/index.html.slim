@@ -1,0 +1,24 @@
+.mb-8.text-center
+  span.text-3xl.font-bold
+    | Products
+.flex.flex-wrap.justify-center.md:justify-start.px-5
+  div class="mb-3 w-fit text-md font-medium mr-2 px-4 py-1.5 rounded #{ @sort === "latest" ? "bg-gray-800 text-gray-100" : "bg-gray-100 text-gray-800" }"
+    = link_to 'Latest', products_path(latest: true)
+  div class="mb-3 w-fit text-md font-medium mr-2 px-4 py-1.5 rounded #{ @sort === "price_high_to_low" ? "bg-gray-800 text-gray-100" : "bg-gray-100 text-gray-800" }"
+    = link_to 'Price: High to Low', products_path(price_high_to_low: true)
+  div class="mb-3 w-fit text-md font-medium mr-2 px-4 py-1.5 rounded #{ @sort === "price_low_to_high" ? "bg-gray-800 text-gray-100" : "bg-gray-100 text-gray-800" }"
+    = link_to 'Price: Low to High', products_path(price_low_to_high: true)
+
+.flex.flex-wrap.justify-center
+  - @products.each do |product|
+    .w-full.max-w-sm.rounded-lg.xl:w-4/12.md:w-6/12
+      = link_to product_path(product) do
+        = image_tag product.image, class: "p-5 object-cover"
+        .px-5.pb-5
+          p.text-3xl.font-semibold.tracking-tight.text-gray-900.mb-4 = product.name
+          .flex.justify-between.items-center
+            span.text-3xl.font-bold.text-gray-900 = number_to_currency(product.price, unit: "¥", strip_insignificant_zeros: true)
+            - if product.stock > 0
+              span.bg-blue-100.text-blue-800.text-xs.font-semibold.p-2.rounded In stock
+            - else
+              span.bg-red-100.text-red-800.text-xs.font-semibold.p-2.rounded Out of stock
