@@ -1,6 +1,6 @@
 class CartItems < ApplicationRecord
-  belongs_to :customer, dependent: :destroy
-  belongs_to :product, dependent: :destroy
+  belongs_to :customer
+  belongs_to :product
 
   validates :quantity, presence: true
 end
