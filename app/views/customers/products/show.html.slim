@@ -21,3 +21,6 @@
           / .ml-4
           / = link_to edit_admins_product_path(@product), class: "text-center cursor-pointer focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2 mb-2" do
           /   | Edit Product
+          .ml-4
+          = link_to cart_items_path({ product_id: @product.id }), data: { turbo_method: :post },  class: "text-center cursor-pointer focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2 mb-2" do
+            | カートに入れる
