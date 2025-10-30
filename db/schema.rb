@@ -54,6 +54,15 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
+  create_table "cart_items", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "quantity", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id", "product_id"], name: "cart_cust_prod_ind", unique: true
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string "name", null: false
     t.integer "status", default: 0, null: false
@@ -80,4 +89,6 @@ ActiveRecord::Schema[8.0].define(version: 0) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "cart_items", "customers"
+  add_foreign_key "cart_items", "products"
 end

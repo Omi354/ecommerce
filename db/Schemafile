@@ -111,5 +111,15 @@ create_table "products" do |t|
   t.index [ :name, :description, :price ], unique: true
 end
 
+create_table "cart_items" do |t|
+  t.bigint :customer_id, null: false
+  t.bigint :product_id, null: false
+  t.integer :quantity, null: false, default: 1
+  t.timestamps null: false
+  t.index [ :customer_id, :product_id ], name: "cart_cust_prod_ind", unique: true
+end
+
 add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
 add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+add_foreign_key "cart_items", "customers", column: "customer_id"
+add_foreign_key "cart_items", "products", column: "product_id"
