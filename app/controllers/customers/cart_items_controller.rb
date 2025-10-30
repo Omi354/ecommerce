@@ -1,4 +1,5 @@
 class Customers::CartItemsController < Customers::CustomerBaseController
+  before_action :authenticate_customer!, except: %i[ create ]
   before_action :set_cart_item, only: %i[ destroy increase decrease ]
 
   def index
