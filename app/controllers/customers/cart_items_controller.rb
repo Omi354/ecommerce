@@ -4,6 +4,7 @@ class Customers::CartItemsController < Customers::CustomerBaseController
 
   def index
     @cart_items = current_customer.cart_items.all
+    @sub_total = @cart_items.inject(0) { |result, cart_item| result + cart_item.line_total }
   end
 
   def create
