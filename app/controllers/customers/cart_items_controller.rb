@@ -9,8 +9,8 @@ class Customers::CartItemsController < Customers::CustomerBaseController
 
   def create
     product_id = params[:product_id]
-    return redirect_to product_path(id: product_id), alert: 'ログインしてください' unless customer_signed_in?
-    return redirect_to product_path(id: product_id), alert: 'カートに追加済です' if CartItem.find_by(customer_id: current_customer.id, product_id: product_id)
+    return redirect_to product_path(id: product_id), alert: "ログインしてください" unless customer_signed_in?
+    return redirect_to product_path(id: product_id), alert: "カートに追加済です" if CartItem.find_by(customer_id: current_customer.id, product_id: product_id)
 
     cart_item = current_customer.cart_items.build({
       customer_id: current_customer.id,
@@ -19,9 +19,9 @@ class Customers::CartItemsController < Customers::CustomerBaseController
     })
 
     if cart_item.save
-      redirect_to product_path(id: cart_item.id), notice: 'カートに追加しました'
+      redirect_to product_path(id: cart_item.id), notice: "カートに追加しました"
     else
-      redirect_to product_path(id: cart_item.id), alert: 'カートの追加に失敗しました'
+      redirect_to product_path(id: cart_item.id), alert: "カートの追加に失敗しました"
     end
   end
 
@@ -35,7 +35,7 @@ class Customers::CartItemsController < Customers::CustomerBaseController
     if @cart_item.quantity + 1 <= @cart_item.product.stock
       @cart_item.increment!(:quantity, 1)
     else
-      flash[:alert] = '在庫数上限です'
+      flash[:alert] = "在庫数上限です"
     end
 
     redirect_to cart_items_path
@@ -44,7 +44,7 @@ class Customers::CartItemsController < Customers::CustomerBaseController
   def decrease
     if @cart_item.quantity == 1
       @cart_item.destroy!
-      flash[:notice] = '商品をカートから削除しました'
+      flash[:notice] = "商品をカートから削除しました"
     else
       @cart_item.decrement!(:quantity, 1)
     end
