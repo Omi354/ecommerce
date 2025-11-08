@@ -3,3 +3,7 @@ import "@hotwired/turbo-rails"
 
 // Stimulus controllers.
 import "./controllers"
+
+Turbo.StreamActions.redirect = function () {
+  Turbo.visit(this.target);
+};

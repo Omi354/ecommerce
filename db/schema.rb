@@ -57,7 +57,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   create_table "cart_items", force: :cascade do |t|
     t.bigint "customer_id", null: false
     t.bigint "product_id", null: false
-    t.integer "quantity", default: 0, null: false
+    t.integer "quantity", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id", "product_id"], name: "cart_cust_prod_ind", unique: true
@@ -77,6 +77,30 @@ ActiveRecord::Schema[8.0].define(version: 0) do
     t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
   end
 
+  create_table "order_details", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "price", null: false
+    t.integer "quantity", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.string "name", null: false
+    t.string "postal_code", null: false
+    t.string "prefecture", null: false
+    t.string "city", null: false
+    t.string "address1", null: false
+    t.string "address2"
+    t.integer "postage", null: false
+    t.integer "billing_amount", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
@@ -91,4 +115,7 @@ ActiveRecord::Schema[8.0].define(version: 0) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cart_items", "customers"
   add_foreign_key "cart_items", "products"
+  add_foreign_key "order_details", "orders"
+  add_foreign_key "order_details", "products"
+  add_foreign_key "orders", "customers"
 end

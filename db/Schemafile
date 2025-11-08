@@ -119,7 +119,32 @@ create_table "cart_items" do |t|
   t.index [ :customer_id, :product_id ], name: "cart_cust_prod_ind", unique: true
 end
 
+create_table "orders" do |t|
+  t.bigint :customer_id, null: false
+  t.string :name, null: false
+  t.string :postal_code, null: false
+  t.string :prefecture, null: false
+  t.string :city, null: false
+  t.string :address1, null: false
+  t.string :address2
+  t.integer :postage, null: false
+  t.integer :billing_amount, null: false
+  t.integer :status, null: false, default: 0
+  t.timestamps null: false
+end
+
+create_table "order_details" do |t|
+  t.bigint :order_id, null: false
+  t.bigint :product_id, null: false
+  t.integer :price, null: false
+  t.integer :quantity, null: false
+  t.timestamps null: false
+end
+
 add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
 add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
 add_foreign_key "cart_items", "customers", column: "customer_id"
 add_foreign_key "cart_items", "products", column: "product_id"
+add_foreign_key "orders", "customers", column: "customer_id"
+add_foreign_key "order_details", "orders", column: "order_id"
+add_foreign_key "order_details", "products", column: "product_id"

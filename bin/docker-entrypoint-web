@@ -21,4 +21,7 @@ if compgen -G "${manifest_files}" > /dev/null 2>&1; then
     -delete
 fi
 
+mkdir -p /app/tmp/pids
+rm -f /app/tmp/pids/server.pid
+
 exec "$@"
