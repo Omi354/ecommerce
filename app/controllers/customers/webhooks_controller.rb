@@ -20,7 +20,7 @@ class Customers::WebhooksController < Customers::CustomerBaseController
     # Check that you have configured webhook signing
     if endpoint_secret
       # Retrieve the event by verifying the signature using the raw body and the endpoint secret
-      signature = request.env['HTTP_STRIPE_SIGNATURE'];
+      signature = request.env["HTTP_STRIPE_SIGNATURE"]
       begin
         event = Stripe::Webhook.construct_event(
           payload, signature, endpoint_secret
@@ -33,7 +33,7 @@ class Customers::WebhooksController < Customers::CustomerBaseController
 
     # Handle the event
     case event.type
-    when 'checkout.session.completed'
+    when "checkout.session.completed"
       session = event.data.object
       customer = Customer.find(session.client_reference_id)
       return unless customer
@@ -43,7 +43,7 @@ class Customers::WebhooksController < Customers::CustomerBaseController
           order = create_order(session)
           session_with_expand = Stripe::Checkout::Session.retrieve({
             id: session.id,
-            expand: ['line_items' ]
+            expand: [ "line_items" ]
           })
 
           session_with_expand.line_items.data.each do |line_item|
@@ -94,5 +94,3 @@ class Customers::WebhooksController < Customers::CustomerBaseController
     purchased_product.update!(stock: purchased_product.stock - order_detail.quantity)
   end
 end
-
-

@@ -21,9 +21,9 @@ class Customer < ApplicationRecord
       {
         quantity: cart_item.quantity,
         price_data: {
-          currency: 'jpy',
+          currency: "jpy",
           unit_amount: cart_item.product.price,
-          tax_behavior: 'inclusive',
+          tax_behavior: "inclusive",
           product_data: {
             name: cart_item.product.name,
             metadata: {
