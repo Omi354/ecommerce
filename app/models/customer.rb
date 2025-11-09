@@ -19,7 +19,7 @@ class Customer < ApplicationRecord
   def line_items_checkout
     line_items = self.cart_items.map do |cart_item|
       {
-        quantity: cart_items.sum(:quantity),
+        quantity: cart_item.quantity,
         price_data: {
           currency: 'jpy',
           unit_amount: cart_item.product.price,
