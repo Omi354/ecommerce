@@ -49,9 +49,10 @@ class Customers::WebhooksController < Customers::CustomerBaseController
           session_with_expand.line_items.data.each do |line_item|
             create_order_detail(order, line_item)
           end
+
+          customer.cart_items.delete_all
         end
 
-        customer.cart_items.delete_all
         redirect_to session.success_url
       rescue StandardError => e
         puts "ERROR: #{e.message}"
@@ -84,11 +85,13 @@ class Customers::WebhooksController < Customers::CustomerBaseController
     purchased_product = Product.find(product.metadata.product_id)
     return unless purchased_product
 
-    order.order_details.create!(
+    order_detail = order.order_details.create!(
       product_id: purchased_product.id,
       price: line_item.price.unit_amount,
       quantity: line_item.quantity
     )
+
+    purchased_product.update!(stock: purchased_product.stock - order_detail.quantity)
   end
 end
 
