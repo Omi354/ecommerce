@@ -34,37 +34,61 @@ class Customers::WebhooksController < Customers::CustomerBaseController
     # Handle the event
     case event.type
     when 'checkout.session.completed'
-      begin
-        session = event.data.object
-        response = Stripe::Checkout::Session.retrieve({
-          id: session.id,
-          expand: ['line_items']
-        })
+      session = event.data.object
+      customer = Customer.find(session.client_reference_id)
+      return unless customer
 
-        puts '----------------'
-        pp response.line_items.data
-        puts '----------------'
-        # Order.create!(
-        #   customer_id: session.client_reference_id,
-        #   name: session.collected_information.shipping_details.name,
-        #   postal_code: session.collected_information.shipping_details.address.postal_code,
-        #   prefecture: session.collected_information.shipping_details.address.state,
-        #   city: session.collected_information.shipping_details.address.city,
-        #   address1: session.collected_information.shipping_details.address.line1,
-        #   address2: session.collected_information.shipping_details.address.line2,
-        #   postage: session.shipping_options[0].shipping_amount,
-        #   billing_amount: session.amount_total,
-        #   status: session.status
-        # )
+      begin
+        ApplicationRecord.transaction do
+          order = create_order(session)
+          session_with_expand = Stripe::Checkout::Session.retrieve({
+            id: session.id,
+            expand: ['line_items' ]
+          })
+
+          session_with_expand.line_items.data.each do |line_item|
+            create_order_detail(order, line_item)
+          end
+        end
+
+        customer.cart_items.delete_all
+        redirect_to session.success_url
       rescue StandardError => e
-        Rails.logger.error <<~LOG
-          [ERROR] #{e.class}: #{e.message}
-          #{e.backtrace.join("\n")}
-        LOG
+        puts "ERROR: #{e.message}"
+        raise StandardError
       end
     else
       puts "Unhandled event type: #{event.type}"
     end
+  end
+
+  private
+
+  def create_order(session)
+    Order.create!(
+      customer_id: session.client_reference_id,
+      name: session.collected_information.shipping_details.name,
+      postal_code: session.collected_information.shipping_details.address.postal_code,
+      prefecture: session.collected_information.shipping_details.address.state,
+      city: session.collected_information.shipping_details.address.city,
+      address1: session.collected_information.shipping_details.address.line1,
+      address2: session.collected_information.shipping_details.address.line2,
+      postage: session.shipping_options[0].shipping_amount,
+      billing_amount: session.amount_total,
+      status: :confirm_payment
+    )
+  end
+
+  def create_order_detail(order, line_item)
+    product = Stripe::Product.retrieve(line_item.price.product)
+    purchased_product = Product.find(product.metadata.product_id)
+    return unless purchased_product
+
+    order.order_details.create!(
+      product_id: purchased_product.id,
+      price: line_item.price.unit_amount,
+      quantity: line_item.quantity
+    )
   end
 end
 
