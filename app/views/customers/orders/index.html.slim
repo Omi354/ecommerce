@@ -1,0 +1,38 @@
+.mb-6.text-center
+  span.text-3xl.font-bold
+    | Order Histories
+
+- if @orders.count == 0
+  .mx-auto.max-w-3xl
+    p.mb-8.text-xl.text-centerNo.history
+    .flex.justify-center
+      = link_to products_path, class: 'group inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-purple-600 to-blue-500 p-0.5 font-medium text-gray-900 hover:text-white focus:ring-4 focus:ring-blue-300 group-hover:from-purple-600 group-hover:to-blue-500' do
+        span.rounded-md.bg-white.px-5.py-2.5.transition-all.duration-75.ease-in.group-hover:bg-opacity-0
+          | Find Products
+- else
+  .w-full.px-3
+    .shadow-soft-xl.rounded-2xl.bg-clip-border.w-full.lg:w-3/5.flex.mx-auto
+      .w-full
+        ul.rounded-lg
+          - @orders.each do |order|
+            = link_to order_path(order) do
+              li.py-7.px-6.mb-4.rounded-t-inherit.rounded-xl.bg-gray-50
+                .mb-5
+                  p.mb-4.leading-normal.text-xl = l(order.created_at, format: :short)
+                  p.text-slate-700.inline-block.font-bold.text-center.uppercase.align-middle.transition-all.text-lg
+                    = number_to_currency(order.billing_amount, unit: "¥", strip_insignificant_zeros: true)
+                  span.ml-2.bg-blue-100.text-blue-800.text-xs.font-semibold.p-2.rounded
+                    = order.status
+                div
+                  p.mb-2.leading-tight.text-sm
+                   | Name:
+                   span.font-semibold.text-slate-700.sm:ml-2 = order.name
+                  p.mb-2.leading-tight.text-sm
+                   | Postal Code:
+                   span.font-semibold.text-slate-700.sm:ml-2 = order.postal_code
+                  p.mb-2.leading-tight.text-sm
+                   | Prefecture:
+                   span.font-semibold.text-slate-700.sm:ml-2 = order.prefecture
+                  p.mb-2.leading-tight.text-sm
+                   | Address:
+                   span.font-semibold.text-slate-700.sm:ml-2 = order.address1

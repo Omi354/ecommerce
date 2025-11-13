@@ -1,4 +1,6 @@
 class Customers::OrdersController < Customers::CustomerBaseController
+  before_action :authenticate_customer!
+
   def index
     @orders = current_customer.orders.latest
   end

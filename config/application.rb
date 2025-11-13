@@ -42,5 +42,6 @@ module Hello
      g.test_framework false
      g.template_engine = :slim
    end
+   config.time_zone = 'Tokyo'
   end
 end
