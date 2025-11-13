@@ -19,13 +19,13 @@ Rails.application.routes.draw do
         patch :decrease
       end
     end
-    resources :checkouts, only: %i[ create ] do
+    resource :webhooks, only: %i[ create ]
+    resources :checkouts, only: %i[ create ]
+    resources :orders, only: %i[ index show ] do
       collection do
         get :success
-        get :cancel
       end
     end
-    resource :webhooks, only: %i[ create ]
   end
 
 

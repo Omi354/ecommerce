@@ -1,0 +1,72 @@
+div.mb-8.text-center
+  span.text-3xl.font-bold
+    | Order Placed
+  br
+  span.text-xl.font-bold
+    = l @order.created_at, format: :short
+
+div.px-6
+  div.flex.flex-col.xl:flex-row.jusitfy-center.w-full.xl:space-x-8.space-y-4.md:space-y-6.xl:space-y-0
+    div.flex.flex-col.justify-start.items-start.w-full.space-y-4.md:space-y-6.xl:space-y-8
+      div.flex.flex-col.justify-start.items-start.bg-gray-50.px-4.py-4.md:py-6.md:p-6.xl:p-8.w-full
+        p.text-lg.md:text-xl.font-semibold.leading-6.xl:leading-5.text-gray-800Order
+          | Details
+        - @order.order_details.each do |order_detail|
+          = link_to product_path(order_detail.product) do
+            div.mt-4.md:mt-6.flex.flex-row.justify-start.items-start.md:items-center.space-x-6.xl:space-x-8.w-full
+              div.pb-4.md:pb-8.w-40
+                = image_tag order_detail.product.image, class: "aspect-square w-full rounded-xl object-cover"
+
+              div.border-b.border-gray-200.md:flex-row.flex-col.flex.justify-between.items-start.w-full.pb-8.space-y-4.md:space-y-0
+                div.w-full.flex.flex-col.justify-start.items-start.space-y-8
+                  p.text-3xl.font-semibold.leading-6.text-gray-800 = order_detail.product.name
+                  div.flex.justify-start.items-start.flex-col.space-y-2
+                    p.text-lg.leading-none.text-gray-800 = number_to_currency(order_detail.price, unit: "¥", strip_insignificant_zeros: true)
+                    p.text-md.leading-none.text-gray-800 Qty: = order_detail.quantity
+
+    div.flex.flex-col.justify-start.items-start.w-full.space-y-4.md:space-y-6.xl:space-y-8
+      div.flex.justify-center.flex-col.md:flex-row.items-stretch.w-full.space-y-4.md:space-y-0.md:space-x-6.xl:space-x-8
+        div.flex.flex-col.px-4.py-6.md:p-6.xl:p-8.w-full.bg-gray-50.space-y-6
+          h3.text-xl.font-semibold.leading-5.text-gray-800 Summary
+          div.flex.justify-center.items-center.w-full.space-y-4.flex-col.border-gray-200.border-b.pb-4
+            div.flex.justify-between.w-full
+              p.text-base.leading-4.text-gray-800 Subtotal
+              p.text-base.leading-4.text-gray-600 = number_to_currency(@order.billing_amount - @order.postage, unit: "¥", strip_insignificant_zeros: true)
+
+            div.flex.justify-between.items-center.w-full
+              p.text-base.leading-4.text-gray-800 Shipping
+              p.text-base.leading-4.text-gray-600 = number_to_currency(@order.postage, unit: "¥", strip_insignificant_zeros: true)
+
+          div.flex.justify-between.items-center.w-full
+            p.text-base.font-semibold.leading-4.text-gray-800 Total
+            p.text-base.font-semibold.leading-4.text-gray-600 = number_to_currency(@order.billing_amount, unit: "¥", strip_insignificant_zeros: true)
+
+      div.bg-gray-50.w-full.h-fit.px-4.py-6.md:p-6.xl:p-8
+        h3.text-xl.font-semibold.leading-5.text-gray-800 Shipping Address
+        div.flex.flex-col.md:flex-row.xl:flex-col.justify-start.w-full.md:space-x-6.lg:space-x-8.xl:space-x-0
+          div.flex.justify-between.w-full.flex-col.mt-6
+            div.flex.justify-center.md:justify-start.xl:flex-col.flex-col.md:space-x-6.lg:space-x-8.xl:space-x-0.space-y-4.xl:space-y-12.md:space-y-0.md:flex-row.items-center.md:items-start
+              div.flex.justify-center.md:justify-start.items-center.md:items-start.flex-col.space-y-4
+                div.w-full.xl:w-48.text-center.md:text-left.text-sm.leading-5.text-gray-600
+                  p.mb-2.leading-tight.text-sm
+                    | Name:
+                    span.font-semibold.text-slate-700.sm:ml-2 = @order.name
+                  p.mb-2.leading-tight.text-sm
+                    | Postal Code:
+                    span.font-semibold.text-slate-700.sm:ml-2 = @order.postal_code
+                  p.mb-2.leading-tight.text-sm
+                    | Prefecture:
+                    span.font-semibold.text-slate-700.sm:ml-2 = @order.prefecture
+                  p.mb-2.leading-tight.text-smwhitespace-nowrap
+                    | Address1:
+                    span.font-semibold.text-slate-700.sm:ml-2 = @order.address1
+                  - if @order.address2
+                    p.mb-2.leading-tight.text-sm.whitespace-nowrap
+                      | Address2:
+                      span.font-semibold.text-slate-700.sm:ml-2 = @order.address2
+      div.flex.justify-center.flex-col.md:flex-row.items-stretch.w-full.space-y-4.md:space-y-0.md:space-x-6.xl:space-x-8
+        div.px-4.py-6.md:p-6.xl:p-8.w-full.bg-gray-50.space-y-6
+          h3.text-xl.font-semibold.leading-5.text-gray-800 Order Status
+          p
+            | Latest Status:
+            span.mt-5.bg-blue-100.text-blue-800.text-md.font-semibold.py-2.px-2.rounded = @order.status

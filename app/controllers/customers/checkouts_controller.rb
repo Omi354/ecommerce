@@ -18,7 +18,7 @@ class Customers::CheckoutsController < Customers::CustomerBaseController
       line_items:,
       mode: "payment",
       payment_method_types: [ "card" ],
-      success_url: root_url,
+      success_url: success_orders_url,
       cancel_url: "#{root_url}cart_items",
       shipping_address_collection: { allowed_countries: [ "JP" ] },
       shipping_options: [
